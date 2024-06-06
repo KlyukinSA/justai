@@ -1,12 +1,17 @@
+# Запуск
+1. В любом сообществе ВК зайдите в настройки и заполните src/main/resources/application.properties:
+    - access.token - из раздела Ключи доступа
+    - confirmation.string и api.version - из раздела Callback API
+2. Запустите этот сервис
 ```shell
-./gradlew run
+./gradlew bootRun
+```
+3. Запустите ngrok для запущенного сервиса (Tomcat started on port 8080)
+```shell
 ngrok http 8080
 ```
-from ngrok panel copy address like https://9b71-88-201-206-85.ngrok-free.app to vk group admin ui and press Confirm (subs correct confirm string in proj first)
+3. Из панели ngrok скопируйте сгенерированный адрес вашего сервера, например https://9b71-88-201-206-85.ngrok-free.app. Вставьте в админку группы ВК и нажмите Подтвердить. ВК должно ответить положительно.
+4. Отправьте что-нибудь боту (в сообщения группе), e g "abrakadabra"
 
-send any message to group (here "abrakadabra")
-
-see in gradlew output:
-```
-{message={date=1717664675, from_id=258127947, id=7, out=0, version=10000015, attachments=[], conversation_message_id=1, fwd_messages=[], important=false, is_hidden=false, peer_id=258127947, random_id=0, text=abrakadabra}, client_info={button_actions=[text, vkpay, open_app, location, open_link, callback, intent_subscribe, intent_unsubscribe], keyboard=true, inline_keyboard=true, carousel=true, lang_id=0}}
-```
+бот должен ответить:
+> You said: abrakadabra
