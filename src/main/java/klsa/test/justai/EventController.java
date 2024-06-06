@@ -2,6 +2,7 @@ package klsa.test.justai;
 
 import klsa.test.justai.dto.GroupEvent;
 import klsa.test.justai.dto.Message;
+import okhttp3.FormBody;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -37,9 +38,15 @@ public class EventController {
         return ResponseEntity.badRequest().build();
     }
     private void reply(int to, String origin, int messageId) throws IOException {
-        String postBody = "peer_id=" + to + "&message=You said: " + origin + "&access_token=" + accessToken + "&v=" + apiVersion + "&random_id=" + messageId;
+        FormBody formBody = new FormBody.Builder()
+                .add("peer_id", String.valueOf(to))
+                .add("message", "You said: " + origin)
+                .add("access_token", accessToken)
+                .add("v", apiVersion)
+                .add("random_id", String.valueOf(messageId))
+                .build();
         OkHttpClient client = new OkHttpClient();
-        Request request = new Request.Builder().url(apiUrl).post(okhttp3.RequestBody.create(MediaType.parse("application/x-www-form-urlencoded; charset=utf-8"), postBody)).build();
+        Request request = new Request.Builder().url(apiUrl).post(formBody).build();
         client.newCall(request).execute();
     }
 }
