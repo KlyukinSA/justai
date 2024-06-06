@@ -1,16 +1,14 @@
-package klsa.test.justai;
+package klsa.test.justai.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.util.Map;
 
 @Getter
 @Setter
 @NoArgsConstructor
 public class GroupEvent {
     private String type;
-    private Map<String, Object> object;
-    private int group_id;
+    private EventObject object;
 }

@@ -1,5 +1,7 @@
 package klsa.test.justai;
 
+import klsa.test.justai.dto.GroupEvent;
+import klsa.test.justai.dto.Message;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -10,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
-import java.util.Map;
 
 
 @RestController
@@ -29,14 +30,13 @@ public class EventController {
         if (event.getType().equals("confirmation")) {
             return ResponseEntity.ok(confirmationString);
         } else if (event.getType().equals("message_new")) {
-            Map<String, Object> object = event.getObject();
-            Map<String, Object> message = (Map<String, Object>) object.get("message");
-            sendMessage((int) message.get("from_id"), (String) message.get("text"), (int) message.get("id"));
+            Message message = event.getObject().getMessage();
+            reply(message.getFromId(), message.getText(), message.getId());
             return ResponseEntity.ok().build();
         }
         return ResponseEntity.badRequest().build();
     }
-    private void sendMessage(int to, String origin, int messageId) throws IOException {
+    private void reply(int to, String origin, int messageId) throws IOException {
         String postBody = "peer_id=" + to + "&message=You said: " + origin + "&access_token=" + accessToken + "&v=" + apiVersion + "&random_id=" + messageId;
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder().url(apiUrl).post(okhttp3.RequestBody.create(MediaType.parse("application/x-www-form-urlencoded; charset=utf-8"), postBody)).build();
